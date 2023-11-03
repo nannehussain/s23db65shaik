@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  - const results = [{egg_color:"brown",egg_type:" egg",egg_price:20},{egg_color:"white",egg_type:"fresh egg",egg_price:5},{egg_color:"black",egg_type:"rare",egg_price:400}]
+       
+
+  .container-fluid
+    .row
+      each egg,index in results
+        div(class="col-sm-2" onclick=`buy(${index})`)       
+          h3 #{egg.egg_type}
+          p egg Color #{egg.egg_color}
+          p egg price: $#{egg.egg_price}
+        
+  script.
+    function buy(index) {
+        alert(`You purchased : ${index}`)
+    }
