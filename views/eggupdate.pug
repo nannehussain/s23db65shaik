@@ -1,0 +1,51 @@
+extends layout
+
+block content
+  h1= title
+  if (toShow == null)
+    h2 No instance to update
+  else
+    - let eggid = toShow._id
+    - let egg_color = toShow.egg_color
+    - let egg_type = toShow.egg_type
+    - let egg_price = toShow.egg_price
+    div.row(class='mb-2')
+      div.mr-1 ID is
+      div #{eggid}
+    - let actionid = "/resource/egg/" + eggid
+    form(id='eggForm', action= actionid, method="PUT")
+      div.form-group
+        label.eggAttr(for='egg_color') egg color
+        input#egg_color(type='text', name='egg_color', value= egg_color)
+      div.form-group
+        label.eggAttr(for='egg_type') egg type
+        input#egg_type(type='text', name='egg_type', value= egg_type)
+      div.form-group
+        label.eggAttr(for='egg_price') egg price
+        input#egg_price(type='number', name='egg_price', value= egg_price)
+      input(type="submit")
+      script.
+        document.forms['eggForm'].addEventListener('submit', (event) => {
+          event.preventDefault();
+          // TODO do something here to show user that form is being submitted
+          fetch(event.target.action, {
+            method: 'PUT',
+            body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+          })
+          .then((resp) => {
+            if (resp.ok) {
+              alert("Egg Updated Successfully");
+              document.getElementById('eggForm').reset();
+            } else {
+              alert("Failed to Update Egg");
+            }
+          })
+          .then((body) => {
+            console.log(body);
+            // TODO handle body
+          })
+          .catch((error) => {
+            // TODO handle error
+            alert("Update failed " + error);
+          });
+        });
